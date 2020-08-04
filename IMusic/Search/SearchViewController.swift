@@ -27,6 +27,9 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
         }
     }
     
+    private lazy var footerView = FooterView()
+    
+    
     var interactor: SearchBusinessLogic?
     var routing: (NSObjectProtocol & SearchRoutingLogic)?
 
@@ -58,6 +61,9 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
         switch viewModel {
         case .cellsViewModel(let tracks):
             searchViewModel = tracks
+            footerView.hideLoader()
+        case .displayFooterView:
+            footerView.showLoader()
         }
     }
     
@@ -65,7 +71,7 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
     
     private func setupTableView() {
         let nib = UINib(nibName: K.NibName.trackCellNibName, bundle: nil)
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = footerView
         tableView.register(nib, forCellReuseIdentifier: TrackCell.reuseId)
         tableView.dataSource = self
         tableView.delegate = self
@@ -92,7 +98,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrackCell.reuseId, for: indexPath) as? TrackCell else { fatalError() }
         let trackCellViewModel = searchViewModel[indexPath.row]
-        cell.trackCellViewModel = trackCellViewModel
+        cell.configure(trackCellViewModel: trackCellViewModel)
         return cell
     }
 }
@@ -103,6 +109,27 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerLabel = UILabel()
+        headerLabel.text = "Please enter search text term..."
+        headerLabel.textAlignment = .center
+        headerLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        return headerLabel
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return searchViewModel.isEmpty ? 250 : 0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewModel = searchViewModel[indexPath.row]
+        let window = UIApplication.shared.windows.first
+        let trackDetailView = Bundle.main.loadNibNamed("TrackDetailView", owner: self, options: nil)?.first as! TrackDetailView
+        trackDetailView.set(viewModel: viewModel)
+        window?.addSubview(trackDetailView)
+        
     }
 }
 

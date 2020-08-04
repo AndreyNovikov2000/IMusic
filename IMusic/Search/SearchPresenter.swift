@@ -20,6 +20,8 @@ class SearchPresenter: SearchPresentationLogic {
         case .responseTracks(let results):
             let cells = results?.map { configureCellViewModel(from: $0) } ?? []
             viewController?.displayData(viewModel: .cellsViewModel(cells))
+        case .presentFooterView:
+            viewController?.displayData(viewModel: .displayFooterView)
         }
     }
     

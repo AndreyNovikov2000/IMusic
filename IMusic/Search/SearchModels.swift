@@ -19,12 +19,14 @@ struct Search {
         struct Response {
             enum ResponseType {
                 case responseTracks([Result]?)
+                case presentFooterView
             }
         }
         
         struct ViewModel {
             enum ViewModelType {
                 case cellsViewModel([SearchViewModel.Cell])
+                case displayFooterView
             }
         }
     }
