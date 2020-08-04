@@ -19,7 +19,7 @@ class MainTabBarController: UITabBarController {
     }
     
     private func setupTabBarController() {
-        let searchViewController = SearchViewController()
+        let searchViewController: SearchViewController = .loadFromSrotyboard()
         let libraryViewController = LibraryViewController()
         
         viewControllers = [
@@ -28,7 +28,7 @@ class MainTabBarController: UITabBarController {
         ]
         
         tabBar.isTranslucent = false
-        tabBar.tintColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+        tabBar.tintColor = #colorLiteral(red: 1, green: 0.5620236723, blue: 0, alpha: 1)
     }
     
     private func generateViewController(withRootViewController viewController: UIViewController, navigationTitle: String, tabBarImage: UIImage?) -> UIViewController {
@@ -40,3 +40,4 @@ class MainTabBarController: UITabBarController {
         return navigationVC
     }
 }
+

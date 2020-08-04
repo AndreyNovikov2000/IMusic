@@ -7,17 +7,15 @@
 //
 
 import UIKit
+import Alamofire
 
-struct TrackModel {
-    let trackName: String
-    let artistName: String
-}
-
-class SearchViewController: UITableViewController {
-
+class SearchViewControllerM: UITableViewController {
+    
     // MARK: - Private properties
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private var timer: Timer?
+    private var tarcks = [Result]()
     
     // MARK: - Live cycle
     
@@ -25,7 +23,6 @@ class SearchViewController: UITableViewController {
         super.viewDidLoad()
         
         setupTable()
-        setupSearchBar()
     }
     
     // MARK: - Private methods
@@ -35,26 +32,20 @@ class SearchViewController: UITableViewController {
         tableView.tableFooterView = UIView()
     }
     
-    private func setupSearchBar() {
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.automaticallyShowsCancelButton = false
-        searchController.searchBar.delegate = self
-    }
+
 }
 
 
 // MARK: - UITableViewDataSource
 
-extension SearchViewController {
+extension SearchViewControllerM {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return tarcks.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "1", for: indexPath)
-        cell.textLabel?.text = "index"
+        cell.textLabel?.text = tarcks[indexPath.row].trackName
         return cell
     }
 }
@@ -62,14 +53,17 @@ extension SearchViewController {
 
 // MARK: - UITableViewDelegate
 
-extension SearchViewController {
+extension SearchViewControllerM {
     
 }
 
-// MARK: -
 
-extension SearchViewController: UISearchBarDelegate {
+// MARK: - UISearchBarDelegate
+
+extension SearchViewControllerM: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
+        
     }
 }
+
+
