@@ -91,9 +91,9 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nn6-V9-v11">
-                                    <rect key="frame" x="118" y="78" width="118" height="59"/>
+                                    <rect key="frame" x="118" y="79" width="118" height="57"/>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <state key="normal" image="play"/>
+                                    <state key="normal" image="pause"/>
                                     <connections>
                                         <action selector="playPuseTapped:" destination="59N-Pt-S1B" eventType="touchUpInside" id="zHg-mI-2zk"/>
                                     </connections>
@@ -146,12 +146,12 @@
             <viewLayoutGuide key="safeArea" id="ofb-dd-anw"/>
             <connections>
                 <outlet property="authorLabel" destination="Z6L-0p-CTH" id="cKV-VB-3Rh"/>
-                <outlet property="currentTimeLabel" destination="oN6-y9-GPc" id="3d2-5G-JFA"/>
+                <outlet property="currentTimeLabel" destination="hTR-WG-ao8" id="rn7-Jl-4Jg"/>
                 <outlet property="currentTimeSlider" destination="LO0-0x-T5f" id="8HV-fK-EIs"/>
                 <outlet property="durationLabel" destination="tsB-Fk-TFi" id="lso-mI-umn"/>
                 <outlet property="playPauseButton" destination="nn6-V9-v11" id="rOe-XY-wUZ"/>
                 <outlet property="trackImageView" destination="ExB-ve-Aka" id="ufQ-XH-sqU"/>
-                <outlet property="tracktitleLabel" destination="5Ue-Zz-okY" id="Jfs-Z3-u4q"/>
+                <outlet property="trackTitleLabel" destination="5Ue-Zz-okY" id="Jfs-Z3-u4q"/>
                 <outlet property="volumeSlider" destination="586-uQ-qkK" id="2Kp-j4-qFe"/>
             </connections>
             <point key="canvasLocation" x="17" y="102"/>
@@ -163,6 +163,6 @@
         <image name="IconMax" width="17" height="17"/>
         <image name="Left" width="34" height="20"/>
         <image name="Right" width="34" height="20"/>
-        <image name="play" width="59" height="59"/>
+        <image name="pause" width="57" height="57"/>
     </resources>
 </document>

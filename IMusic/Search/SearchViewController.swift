@@ -28,7 +28,7 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
     }
     
     private lazy var footerView = FooterView()
-    
+    private var curretnIndexPath: IndexPath?
     
     var interactor: SearchBusinessLogic?
     var routing: (NSObjectProtocol & SearchRoutingLogic)?
@@ -40,6 +40,8 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
         
         setupTableView()
         setupSearchBar()
+        
+        searchBar(searchController.searchBar, textDidChange: "Billie eilish")
     }
     
     // MARK: - Setup
@@ -127,9 +129,10 @@ extension SearchViewController: UITableViewDelegate {
         let viewModel = searchViewModel[indexPath.row]
         let window = UIApplication.shared.windows.first
         let trackDetailView = Bundle.main.loadNibNamed("TrackDetailView", owner: self, options: nil)?.first as! TrackDetailView
+        trackDetailView.myDelegate = self
         trackDetailView.set(viewModel: viewModel)
         window?.addSubview(trackDetailView)
-        
+        curretnIndexPath = indexPath
     }
 }
 
@@ -145,3 +148,37 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
+extension SearchViewController: TrackDetailViewDelegate {
+    private func getTrack(isNext: Bool) -> SearchViewModel.Cell? {
+        guard let indexPath = tableView.indexPathForSelectedRow else { return nil }
+        tableView.deselectRow(at: indexPath, animated: false)
+        var nexIndexPath: IndexPath!
+        
+        if isNext {
+            nexIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+            
+            if indexPath.row == searchViewModel.count - 1 {
+                nexIndexPath = IndexPath(row: 0, section: 0)
+            }
+            
+        } else {
+            nexIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
+            
+            if indexPath.row == 0 {
+                nexIndexPath = IndexPath(row: searchViewModel.count - 1, section: indexPath.section)
+            }
+        }
+        
+        tableView.selectRow(at: nexIndexPath, animated: false, scrollPosition: .none)
+    
+        return searchViewModel[nexIndexPath.row]
+    }
+    
+    func trackDetailViewGetPreviousTrack(_ trackDetailView: TrackDetailView) -> SearchViewModel.Cell? {
+        return getTrack(isNext: false)
+    }
+    
+    func trackDetailViewGetNextTrack(_ trackDetailView: TrackDetailView) -> SearchViewModel.Cell? {
+        return getTrack(isNext: true)
+    }
+}
