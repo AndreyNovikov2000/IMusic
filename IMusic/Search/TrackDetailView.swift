@@ -66,6 +66,8 @@ class TrackDetailView: UIView {
         super.awakeFromNib()
         
         setupTrackImageView()
+        setupGestues()
+        
         motionStartTime()
         observeCurrentTimePlayer()
     }
@@ -115,6 +117,39 @@ class TrackDetailView: UIView {
         }
     }
     
+    
+    // MARK: - selctor methods
+    
+    @objc private func handleTapMaximized() {
+        self.tabBarDelegate?.maximazeTrackDetailView(withViewModel: nil)
+    }
+    
+    @objc private func handlePanMaximized(gesture: UIPanGestureRecognizer) {
+        
+        switch gesture.state {
+        case .changed: handleMinimazedPanChange(gesture: gesture)
+        case .ended: handleMinimazedEndGesture(gesture: gesture)
+        case .possible: break
+        case .began: break
+        case .cancelled: break
+        case .failed: break
+        @unknown default: break
+        }
+    }
+    
+    @objc private func handlePanMinimazed(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .changed: handleMaximizedPanChange(gesture: gesture)
+        case .ended: handleMaximizedEndGesture(gesture: gesture)
+        case .possible: break
+        case .began: break
+        case .cancelled: break
+        case .failed: break
+        @unknown default: break
+        }
+    }
+
+    
     // MARK: - Public methods
     
     func set(viewModel: SearchViewModel.Cell) {
@@ -132,8 +167,9 @@ class TrackDetailView: UIView {
         }
         
         playTrack(previewUrl: viewModel.previewUrl)
-       
+        
     }
+    
     
     
     // MARK: - Private methods
@@ -142,6 +178,118 @@ class TrackDetailView: UIView {
         trackImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         trackImageView.layer.cornerRadius = 7
     }
+    
+    
+    // MARK: - Gestures
+    
+    private func setupGestues() {
+        trackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximized)))
+        trackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePanMaximized)))
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePanMinimazed)))
+    }
+    
+    
+    private func handleMinimazedPanChange(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        
+        let alpha = 1 + translation.y / 200
+        
+        trackView.alpha = alpha < 0 ? 0 : alpha
+        maximizeStackView.alpha = -translation.y / 200
+    }
+    
+    private func handleMaximizedPanChange(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        
+        let alp = translation.y / 500
+        trackView.alpha = alp
+        maximizeStackView.alpha = 1 - alp
+    }
+    
+    private func handleMinimazedEndGesture(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 1,
+                       options: .curveEaseOut,
+                       animations: {
+                        
+                        self.transform = .identity
+                        
+                        if translation.y < -200 {
+                            self.tabBarDelegate?.maximazeTrackDetailView(withViewModel: nil)
+                        } else {
+                            self.trackView.alpha = 1
+                            self.maximizeStackView.alpha = 0
+                        }
+        }) { (_) in
+    
+        }
+    }
+    
+    private func handleMaximizedEndGesture(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 1,
+                       options: .curveEaseOut, animations: {
+                        
+                        self.transform = .identity
+                        
+                        if translation.y > 300 {
+                            self.tabBarDelegate?.minimazeTrackDetailView(self)
+                        } else {
+                            
+                            self.maximizeStackView.alpha = 1
+                            self.trackView.alpha = 0
+                        }
+        }) { (_) in
+            
+        }
+    }
+    
+    
+    // MARK: - Animations
+    
+    private func enlargeTrackImageView() {
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 1,
+                       options: [.curveEaseInOut, .curveEaseOut],
+                       animations: {
+                        
+                        self.trackImageView.transform = .identity
+                        
+        }) { (_) in
+        }
+    }
+    
+    private func reduceTrackImageView() {
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 1,
+                       options: [.curveEaseInOut, .curveEaseOut],
+                       animations: {
+                        
+                        self.trackImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                        
+        }) { (_) in
+        }
+    }
+}
+
+
+// MARK: - Player methods
+
+extension TrackDetailView {
     
     private func playTrack(previewUrl: String?) {
         guard let urlString = previewUrl, let url = URL(string: urlString) else { return }
@@ -172,40 +320,6 @@ class TrackDetailView: UIView {
             guard let self = self else { return }
             guard !self.currentTimeSlider.isHighlighted else { return }
             self.currentTimeSlider.value =  progress
-        }
-    }
-    
-    private func updateCurrentTimeSlider() {
-        
-    }
-    
-    // MARK: - Animations
-    
-    private func enlargeTrackImageView() {
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       usingSpringWithDamping: 0.5,
-                       initialSpringVelocity: 1,
-                       options: [.curveEaseInOut, .curveEaseOut],
-                       animations: {
-                        
-                        self.trackImageView.transform = .identity
-                        
-        }) { (_) in
-        }
-    }
-    
-    private func reduceTrackImageView() {
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       usingSpringWithDamping: 0.5,
-                       initialSpringVelocity: 1,
-                       options: [.curveEaseInOut, .curveEaseOut],
-                       animations: {
-                        
-                        self.trackImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                        
-        }) { (_) in
         }
     }
 }

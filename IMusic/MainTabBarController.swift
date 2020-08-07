@@ -10,7 +10,7 @@ import UIKit
 
 protocol MainTabBarDelegate: class {
     func minimazeTrackDetailView(_ trackDetailView: TrackDetailView)
-    func maximazeTrackDetailView(withViewModel viewModel: SearchViewModel.Cell)
+    func maximazeTrackDetailView(withViewModel viewModel: SearchViewModel.Cell?)
 }
 
 class MainTabBarController: UITabBarController {
@@ -87,6 +87,8 @@ extension MainTabBarController: MainTabBarDelegate {
     
     func minimazeTrackDetailView(_ trackDetailView: TrackDetailView) {
         
+        // animation = maximazedTopAnchorConstraints.fasle -> minimazedTopAnchorConstraints.true
+        
         maximazedTopAnchorConstraints.isActive = false
         
         bottomAnchorConstraint.constant = view.frame.height
@@ -96,7 +98,7 @@ extension MainTabBarController: MainTabBarDelegate {
         UIView.animate(withDuration: 0.5,
                        delay: 0,
                        usingSpringWithDamping: 0.5,
-                       initialSpringVelocity: 1,
+                       initialSpringVelocity: 0,
                        options: .curveEaseOut,
                        animations: {
                         
@@ -110,15 +112,19 @@ extension MainTabBarController: MainTabBarDelegate {
         }
     }
     
-    func maximazeTrackDetailView(withViewModel viewModel: SearchViewModel.Cell) {
-        trackDetailView.set(viewModel: viewModel)
+    func maximazeTrackDetailView(withViewModel viewModel: SearchViewModel.Cell?) {
         
-        maximazedTopAnchorConstraints.isActive = true
+        // animation = minimazedTopAnchorConstraints.false -> maximazedTopAnchorConstraints.true
         minimazedTopAnchorConstraints.isActive = false
+        maximazedTopAnchorConstraints.isActive = true
+       
         
         bottomAnchorConstraint.constant = 0
         maximazedTopAnchorConstraints.constant = 0
         
+        if let viewModel = viewModel {
+            trackDetailView.set(viewModel: viewModel)
+        }
         
         UIView.animate(withDuration: 0.5,
                        delay: 0,
