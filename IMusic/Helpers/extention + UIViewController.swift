@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
     static func loadFromSrotyboard<T: UIViewController>() -> T {
         let viewControllerName = String(describing: T.self)
-        guard let viewController = UIStoryboard(name: viewControllerName, bundle: nil).instantiateInitialViewController() as? T else { fatalError("Fatal error - no initial \(viewControllerName)") }
+        guard let viewController = UIStoryboard(name: viewControllerName, bundle: nil).instantiateInitialViewController() as? T else { fatalError("Fatal error - no initial view controller with name \(String(describing: T.self))") }
         return viewController
     }
 }

@@ -14,6 +14,9 @@ protocol SearchDisplayDataLogic: class {
 
 class SearchViewController: UIViewController, SearchDisplayDataLogic {
     
+    // MARK: - Exteranl properties
+    
+    weak var tabBarDelegate: MainTabBarDelegate?
     
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -33,6 +36,7 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
     var interactor: SearchBusinessLogic?
     var routing: (NSObjectProtocol & SearchRoutingLogic)?
 
+    // MARK: - Live cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +47,10 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
         
         searchBar(searchController.searchBar, textDidChange: "Billie eilish")
     }
+    
+    // MARK: - Selector methods
+    
+
     
     // MARK: - Setup
     
@@ -127,12 +135,7 @@ extension SearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let viewModel = searchViewModel[indexPath.row]
-        let window = UIApplication.shared.windows.first
-        let trackDetailView = Bundle.main.loadNibNamed("TrackDetailView", owner: self, options: nil)?.first as! TrackDetailView
-        trackDetailView.myDelegate = self
-        trackDetailView.set(viewModel: viewModel)
-        window?.addSubview(trackDetailView)
-        curretnIndexPath = indexPath
+        tabBarDelegate?.maximazeTrackDetailView(withViewModel: viewModel)
     }
 }
 

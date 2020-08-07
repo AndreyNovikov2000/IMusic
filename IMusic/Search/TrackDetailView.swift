@@ -20,9 +20,23 @@ class TrackDetailView: UIView {
     // MARK: - Extrnal properties
     
     weak var myDelegate: TrackDetailViewDelegate?
+    weak var tabBarDelegate: MainTabBarDelegate?
     
     // MARK: - IBOutlets
     
+    // Minimized player UI
+    @IBOutlet weak var trackView: UIView!
+    @IBOutlet weak var goNextPlayerButton: UIButton!
+    @IBOutlet weak var playerTrackImageView: UIImageView!
+    @IBOutlet weak var playerTrackTitleLabel: UILabel!
+    @IBOutlet weak var playerTrackPlayPauseButton: UIButton! {
+        didSet {
+            playerTrackPlayPauseButton.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
+        }
+    }
+    
+    // Maximized player UI
+    @IBOutlet weak var maximizeStackView: UIStackView!
     @IBOutlet weak var trackImageView: UIImageView!
     @IBOutlet weak var currentTimeSlider: UISlider!
     @IBOutlet weak var currentTimeLabel: UILabel!
@@ -60,7 +74,7 @@ class TrackDetailView: UIView {
     // MARK: - IBAction
     
     @IBAction func dragDownButtonTapped(_ sender: Any) {
-        self.removeFromSuperview()
+        tabBarDelegate?.minimazeTrackDetailView(self)
     }
     
     @IBAction func handleCurrentTimeSlider(_ sender: Any) {
@@ -87,14 +101,16 @@ class TrackDetailView: UIView {
         set(viewModel: serachViewModel)
     }
     
-    @IBAction func playPuseTapped(_ sender: Any) {
+    @IBAction func playPauseTapped(_ sender: Any) {
         if playerIsPlaying {
             reduceTrackImageView()
             playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            playerTrackPlayPauseButton.setImage(UIImage(named: "play"), for: .normal)
             player.pause()
         } else {
             enlargeTrackImageView()
             playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+            playerTrackPlayPauseButton.setImage(UIImage(named: "pause"), for: .normal)
             player.play()
         }
     }
@@ -102,15 +118,21 @@ class TrackDetailView: UIView {
     // MARK: - Public methods
     
     func set(viewModel: SearchViewModel.Cell) {
+        playerTrackPlayPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+        playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+        
         authorLabel.text = viewModel.artistName
         trackTitleLabel.text = viewModel.trackName
+        playerTrackTitleLabel.text = viewModel.trackName
         
         let iconUrlString600 = viewModel.iconUrlString?.replacingOccurrences(of: "100x100", with: "600x600")
         if let urlString = iconUrlString600, let imageUrl = URL(string: urlString) {
             trackImageView.sd_setImage(with: imageUrl, completed: nil)
+            playerTrackImageView.sd_setImage(with: imageUrl, completed: nil  )
         }
         
         playTrack(previewUrl: viewModel.previewUrl)
+       
     }
     
     
@@ -119,7 +141,6 @@ class TrackDetailView: UIView {
     private func setupTrackImageView() {
         trackImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         trackImageView.layer.cornerRadius = 7
-        trackImageView.backgroundColor = .green
     }
     
     private func playTrack(previewUrl: String?) {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C7302D624DA9217000ADD0B /* Extention + CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7302D524DA9217000ADD0B /* Extention + CMTime.swift */; };
+		0C7302D824DAC582000ADD0B /* extention + UINib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7302D724DAC582000ADD0B /* extention + UINib.swift */; };
 		0C75D53A24D69B08005AB299 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C75D53924D69B08005AB299 /* AppDelegate.swift */; };
 		0C75D53C24D69B08005AB299 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C75D53B24D69B08005AB299 /* SceneDelegate.swift */; };
 		0C75D53E24D69B08005AB299 /* SearchViewControllerM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C75D53D24D69B08005AB299 /* SearchViewControllerM.swift */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		0C7302D524DA9217000ADD0B /* Extention + CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extention + CMTime.swift"; sourceTree = "<group>"; };
+		0C7302D724DAC582000ADD0B /* extention + UINib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extention + UINib.swift"; sourceTree = "<group>"; };
 		0C75D53624D69B08005AB299 /* IMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C75D53924D69B08005AB299 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C75D53B24D69B08005AB299 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				0CB7F04B24D7E3C900CE3C82 /* Constants.swift */,
 				0CB7F04424D7CE5900CE3C82 /* extention + UIViewController.swift */,
 				0C7302D524DA9217000ADD0B /* Extention + CMTime.swift */,
+				0C7302D724DAC582000ADD0B /* extention + UINib.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				0C7302D624DA9217000ADD0B /* Extention + CMTime.swift in Sources */,
 				0CDB705424D975FC001FCFD5 /* TrackDetailView.swift in Sources */,
 				0CB7F03824D7C07200CE3C82 /* SearchModels.swift in Sources */,
+				0C7302D824DAC582000ADD0B /* extention + UINib.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
