@@ -7,14 +7,24 @@
 //
 
 import SwiftUI
+import URLImage
 
 struct Library: View {
+    
+    @State var tracks = UserDefaults.standard.saveTracks()
+    @State private var showingAlert = false
+    @State private var track: SearchViewModel.Cell!
+    var tabBarDelegate: MainTabBarDelegate?
+    
     var body: some View {
         VStack {
             GeometryReader { geomentry in
                 HStack(alignment: .center) {
                     Button(action: {
-                        print("123")
+                        
+                        self.track = self.tracks[0]
+                        self.tabBarDelegate?.maximazeTrackDetailView(withViewModel: self.track)
+                        
                     }, label: {
                         Image(systemName: "play.fill")
                     })
@@ -23,9 +33,10 @@ struct Library: View {
                         .background(Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)))
                         .cornerRadius(5)
                     
-                    
                     Button(action: {
-                        print("321")
+                       
+                        self.tracks = UserDefaults.standard.saveTracks()
+                        
                     }, label: {
                         Image(systemName: "arrow.2.circlepath")
                     })
@@ -43,30 +54,82 @@ struct Library: View {
                 .padding(.trailing, 16)
             
             List {
-                LibraryCellCell()
+                ForEach(tracks) { track in
+                    LibraryCellCell(cell: track)
+                        .gesture(
+                            
+                            LongPressGesture()
+                                .onEnded{ _ in
+                                    self.track = track
+                                    self.showingAlert = true
+                                }
+                                .simultaneously(with:
+                                    
+                                    TapGesture()
+                                        .onEnded { _ in
+                                            self.track = track
+                                            self.tabBarDelegate?.maximazeTrackDetailView(withViewModel: self.track)
+                                        }))
+
+                }.onDelete(perform: delete(at:))
             }
+            
+        }.actionSheet(isPresented: $showingAlert) { () -> ActionSheet in
+            ActionSheet(title: Text("Do you want to delete this track?"), buttons: [
+                .destructive(Text("Delete"), action: {
+                    self.delete(track: self.track)
+                }),
+                .cancel()
+            ])
+        }
+    }
+}
+
+extension Library {
+    
+    func delete(at offSets: IndexSet) {
+        tracks.remove(atOffsets: offSets)
+        
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: tracks, requiringSecureCoding: false) {
+            UserDefaults.standard.set(savedData, forKey: UserDefaults.tracksKey)
+        }
+    }
+    
+    
+    func delete(track: SearchViewModel.Cell) {
+        guard let index = tracks.firstIndex(of: track) else { return }
+        tracks.remove(at: index)
+        
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: tracks, requiringSecureCoding: false) {
+            UserDefaults.standard.set(savedData, forKey: UserDefaults.tracksKey)
         }
     }
 }
 
 struct LibraryCellCell: View {
+    
+    var cell: SearchViewModel.Cell
+    
+    var url: URL {
+        return URL(string: cell.iconUrlString!)!
+    }
+    
     var body: some View {
-        
-        HStack {
-            Image(systemName: "arrow.2.circlepath")
-                .resizable()
-                .cornerRadius(2)
-                .frame(width: 50, height: 50)
+        HStack(alignment: .center) {
+            URLImage(url) { proxy in
+                proxy.image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            }
+            .frame(width: 60, height: 60, alignment: .center)
             
-            
-            VStack {
-                Text("Text title1")
-                Text("Text tile2")
-                
+            VStack(alignment: .leading) {
+                Text(cell.trackName)
+                Text(cell.artistName)
             }
             .padding(.leading, 16)
         }
-        .padding(.leading, 16)
+        .padding(.leading, 10)
     }
 }
 

@@ -40,9 +40,19 @@
                         <color key="textColor" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HmP-a1-M7S">
+                        <rect key="frame" x="378" y="36" width="16" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <color key="tintColor" red="0.99773496390000005" green="0.3240721822" blue="0.62746727469999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <state key="normal" image="Add"/>
+                        <connections>
+                            <action selector="addTrackAction:" destination="L5i-qg-D0H" eventType="touchUpInside" id="Rk3-QH-hfD"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="addTrackButton" destination="HmP-a1-M7S" id="74S-qO-dts"/>
                 <outlet property="artistNameLabel" destination="8wp-zu-ZlJ" id="nhI-Ys-N6M"/>
                 <outlet property="collectionNameLabel" destination="blb-hU-P9s" id="2gy-XS-NL8"/>
                 <outlet property="trackImageView" destination="X36-yf-Pua" id="OAh-MM-e6I"/>
@@ -51,4 +61,7 @@
             <point key="canvasLocation" x="105.79710144927537" y="36.160714285714285"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="Add" width="16" height="16"/>
+    </resources>
 </document>

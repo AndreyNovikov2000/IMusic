@@ -41,7 +41,8 @@ class MainTabBarController: UITabBarController {
         let searchViewController: SearchViewController = .loadFromSrotyboard()
         searchViewController.tabBarDelegate = self
         
-        let library = Library()
+        var library = Library()
+        library.tabBarDelegate = self
         let hostViewController = UIHostingController(rootView: library)
         
         viewControllers = [
