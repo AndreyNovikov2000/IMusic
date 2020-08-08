@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C4BEA6624DD858C009299E7 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4BEA6524DD858C009299E7 /* Library.swift */; };
 		0C7302D624DA9217000ADD0B /* Extention + CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7302D524DA9217000ADD0B /* Extention + CMTime.swift */; };
 		0C7302D824DAC582000ADD0B /* extention + UINib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7302D724DAC582000ADD0B /* extention + UINib.swift */; };
 		0C75D53A24D69B08005AB299 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C75D53924D69B08005AB299 /* AppDelegate.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C4BEA6524DD858C009299E7 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		0C7302D524DA9217000ADD0B /* Extention + CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extention + CMTime.swift"; sourceTree = "<group>"; };
 		0C7302D724DAC582000ADD0B /* extention + UINib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extention + UINib.swift"; sourceTree = "<group>"; };
 		0C75D53624D69B08005AB299 /* IMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 			children = (
 				0C75D53924D69B08005AB299 /* AppDelegate.swift */,
 				0C75D53B24D69B08005AB299 /* SceneDelegate.swift */,
+				0C4BEA6524DD858C009299E7 /* Library.swift */,
 				0CB7F00F24D6CE3F00CE3C82 /* Services */,
 				0C75D54D24D69C1D005AB299 /* MainTabBarController.swift */,
 				0C75D53D24D69B08005AB299 /* SearchViewControllerM.swift */,
@@ -343,6 +346,7 @@
 				0CB7F01524D6E87F00CE3C82 /* NetworkService.swift in Sources */,
 				0C7302D624DA9217000ADD0B /* Extention + CMTime.swift in Sources */,
 				0CDB705424D975FC001FCFD5 /* TrackDetailView.swift in Sources */,
+				0C4BEA6624DD858C009299E7 /* Library.swift in Sources */,
 				0CB7F03824D7C07200CE3C82 /* SearchModels.swift in Sources */,
 				0C7302D824DAC582000ADD0B /* extention + UINib.swift in Sources */,
 			);

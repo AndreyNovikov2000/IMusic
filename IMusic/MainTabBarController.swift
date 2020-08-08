@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol MainTabBarDelegate: class {
     func minimazeTrackDetailView(_ trackDetailView: TrackDetailView)
@@ -39,11 +40,13 @@ class MainTabBarController: UITabBarController {
     private func setupTabBarController() {
         let searchViewController: SearchViewController = .loadFromSrotyboard()
         searchViewController.tabBarDelegate = self
-        let libraryViewController = LibraryViewController()
+        
+        let library = Library()
+        let hostViewController = UIHostingController(rootView: library)
         
         viewControllers = [
             generateViewController(withRootViewController: searchViewController, navigationTitle: "Search", tabBarImage: UIImage(systemName: "magnifyingglass")),
-            generateViewController(withRootViewController: libraryViewController, navigationTitle: "Library", tabBarImage: UIImage(systemName: "square.and.arrow.down"))
+            generateViewController(withRootViewController: hostViewController, navigationTitle: "Library", tabBarImage: UIImage(systemName: "square.and.arrow.down"))
         ]
         
         tabBar.isTranslucent = false
