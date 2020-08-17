@@ -10,7 +10,7 @@ import UIKit
 import SDWebImage
 import AVFoundation
 
-protocol TrackDetailViewDelegate: class {
+protocol TrackDetailViewDelegate {
     func trackDetailViewGetPreviousTrack(_ trackDetailView: TrackDetailView) -> SearchViewModel.Cell?
     func trackDetailViewGetNextTrack(_ trackDetailView: TrackDetailView) -> SearchViewModel.Cell?
 }
@@ -19,7 +19,7 @@ class TrackDetailView: UIView {
     
     // MARK: - Extrnal properties
     
-    weak var myDelegate: TrackDetailViewDelegate?
+    var myDelegate: TrackDetailViewDelegate?
     weak var tabBarDelegate: MainTabBarDelegate?
     
     // MARK: - IBOutlets

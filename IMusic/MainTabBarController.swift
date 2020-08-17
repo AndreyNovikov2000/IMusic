@@ -18,7 +18,7 @@ class MainTabBarController: UITabBarController {
     
     // MARK: - Private properties
     
-    private lazy var trackDetailView: TrackDetailView = UINib.loadfromNib()
+    lazy var trackDetailView: TrackDetailView = UINib.loadfromNib()
     
     private var minimazedTopAnchorConstraints: NSLayoutConstraint!
     private var maximazedTopAnchorConstraints: NSLayoutConstraint!

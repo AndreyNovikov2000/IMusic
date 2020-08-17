@@ -34,7 +34,7 @@ struct Library: View {
                         .cornerRadius(5)
                     
                     Button(action: {
-                       
+                        
                         self.tracks = UserDefaults.standard.saveTracks()
                         
                     }, label: {
@@ -62,15 +62,20 @@ struct Library: View {
                                 .onEnded{ _ in
                                     self.track = track
                                     self.showingAlert = true
-                                }
-                                .simultaneously(with:
-                                    
-                                    TapGesture()
-                                        .onEnded { _ in
-                                            self.track = track
-                                            self.tabBarDelegate?.maximazeTrackDetailView(withViewModel: self.track)
-                                        }))
-
+                            }
+                            .simultaneously(with:
+                                
+                                TapGesture()
+                                    .onEnded { _ in
+                                        let keyWindow = UIApplication.shared.connectedScenes.filter({$0.activationState == .foregroundActive}).map({$0 as? UIWindowScene}).compactMap({$0}).first?.windows.filter({$0.isKeyWindow}).first
+                                        
+                                        let tabbarVC = keyWindow?.rootViewController as? MainTabBarController
+                                        tabbarVC?.trackDetailView.myDelegate = self
+                                        
+                                        self.track = track
+                                        self.tabBarDelegate?.maximazeTrackDetailView(withViewModel: self.track)
+                            }))
+                    
                 }.onDelete(perform: delete(at:))
             }
             
@@ -133,8 +138,36 @@ struct LibraryCellCell: View {
     }
 }
 
-struct Library_Previews: PreviewProvider {
-    static var previews: some View {
-        Library()
+
+// MARK: - TrackDetailViewDelegate
+
+extension Library: TrackDetailViewDelegate {
+    func trackDetailViewGetPreviousTrack(_ trackDetailView: TrackDetailView) -> SearchViewModel.Cell? {
+        guard let index = tracks.firstIndex(of: track) else { return nil }
+        let previusTrack: SearchViewModel.Cell
+        
+        if index == 0 {
+            previusTrack = tracks[tracks.count - 1]
+        } else {
+            previusTrack = tracks[index - 1]
+        }
+        
+        return previusTrack
+    }
+    
+    func trackDetailViewGetNextTrack(_ trackDetailView: TrackDetailView) -> SearchViewModel.Cell? {
+        guard let index = tracks.firstIndex(of: track) else { return nil }
+        let nextTrack: SearchViewModel.Cell
+        
+        if index == tracks.count - 1 {
+            nextTrack = tracks[0]
+        } else {
+            nextTrack = tracks[index + 1]
+        }
+        
+        self.track = nextTrack
+        
+        return nextTrack
+        
     }
 }

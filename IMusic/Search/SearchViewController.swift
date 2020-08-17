@@ -47,8 +47,14 @@ class SearchViewController: UIViewController, SearchDisplayDataLogic {
         
         searchBar(searchController.searchBar, textDidChange: "Billie eilish")
     }
-    
-    // MARK: - Selector methods
+        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let keyWindow = UIApplication.shared.connectedScenes.filter({$0.activationState == .foregroundActive}).map({$0 as? UIWindowScene}).compactMap({$0}).first?.windows.filter({$0.isKeyWindow}).first
+        
+        let tabBarController = keyWindow?.rootViewController as? MainTabBarController
+        tabBarController?.trackDetailView.myDelegate = self
+    }
     
 
     
@@ -150,6 +156,9 @@ extension SearchViewController: UISearchBarDelegate {
         })
     }
 }
+
+
+// MARK: - TrackDetailViewDelegate
 
 extension SearchViewController: TrackDetailViewDelegate {
     private func getTrack(isNext: Bool) -> SearchViewModel.Cell? {
